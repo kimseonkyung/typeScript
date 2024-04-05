@@ -16,8 +16,8 @@ const c: boolean = true;
  * 배열 타입을 의미한다.
  */
 
-const arr1: number[] = [1, 2, 3];
-const arr2: string[] = ["a", "b", "c"];
+const arr: number[] = [1, 2, 3];
+const arr: string[] = ["a", "b", "c"];
 
 /**
  * any
@@ -66,11 +66,11 @@ function greet(name: string) {
  * 일반적으로 타입 추론을 하기때문에 명시하지 않아도 된다.
  */
 
-function getFavoriteNumber1(): number {
+function getFavoriteNumber(): number {
   return 50;
 }
 
-async function getFavoriteNumber2(): Promise<number> {
+async function getFavoriteNumber(): Promise<number> {
   return 50;
 }
 
@@ -116,15 +116,15 @@ printCoord({ x: 3, y: 7 });
  * 속성 뒤에 ?를 추가하면 된다.
  */
 
-function printName1(obj: { first: string; last?: string }) {
+function printName(obj: { first: string; last?: string }) {
   console.log(obj.first, obj.last);
 }
 
-printName1({ first: "Bob" });
-printName1({ first: "Alice", last: "Alisson" });
+printName({ first: "Bob" });
+printName({ first: "Alice", last: "Alisson" });
 
 // 존재하지 않는 속성에 엑세스하면 런타임 오류가 아닌 undefined를 얻는다.
-function printName2(obj: { first: string; last?: string }) {
+function printName(obj: { first: string; last?: string }) {
   // obj.last에는 undefined가 올 수 있어서 에러가 발생한다.
   console.log(obj.last.toUpperCase());
 
@@ -144,19 +144,19 @@ function printName2(obj: { first: string; last?: string }) {
  * 둘 이상의 다른 타입을 조합하여 구성할 수 있다.
  */
 
-function printId1(id: number | string) {
+function printId(id: number | string) {
   console.log(`Your ID is: ${id}`);
 }
 
 // OK
-printId1(101);
+printId(101);
 // OK
-printId1("202");
+printId("202");
 // Error
-printId1({ myID: 22342 });
+printId({ myID: 22342 });
 
 // 유니온 타입인 값이 있으면, 유니언에 있는 모든 타입에 공통적인 멤버들에만 접근 가능하다.
-function printId2(id: number | string) {
+function printId(id: number | string) {
   // toUpperCase는 string만 접근 가능하다.
   console.log(id.toUpperCase());
 }
@@ -198,12 +198,110 @@ type Point = {
   y: number;
 };
 
-function printCoord2(pt: Point) {
+function printCoord(pt: Point) {
   console.log(`The coordinate's x value is ${pt.x}`);
   console.log(`The coordinate's y value is ${pt.y}`);
 }
 
-printCoord2({ x: 100, y: 100 });
+printCoord({ x: 100, y: 100 });
 
 // 유니온 타입 지정
 type ID = number | string;
+
+/**
+ * 인터페이스
+ *
+ * 인터페이스는 객체 타입의 이름을 지정하는 또 다른 방법이다.
+ * TypeScript는 타입의 구조와 기능에만 관심이 있기 때문에
+ * 구조적으로 타입이 지정된 타입 시스템이라고 부른다.
+ */
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+function printCoord(pt: Point) {
+  console.log(`The coordinate's x value is ${pt.x}`);
+  console.log(`The coordinate's y value is ${pt.y}`);
+}
+
+printCoord({ x: 100, y: 100 });
+
+/**
+ * 타입 별칭과 인터페이스의 차이점
+ *
+ * 타입 별칭과 인터페이스는 매우 유사하며 대부분의 경우 자유롭게 선택할 수 있다.
+ * 타입 별칭의 모든 기능은 인터페이스에서 사용할 수 있다
+ * 중요한 차이점은 항상 확장이 가능한 인터페이스와 달리
+ * 타입 별칭은 새 속성을 추가 할 수 없다.
+ */
+
+// 인터페이스 확장
+interface Animal {
+  name: string;
+}
+
+interface Bear extends Animal {
+  honey: boolean;
+}
+
+const bear = getBear();
+bear.name;
+bear.honey;
+
+// 교차점을 통해 타입 확장
+type Animal = {
+  name: string;
+};
+
+type Bear = Animal & {
+  honey: boolean;
+};
+
+const bear = getBear();
+bear.name;
+bear.honey;
+
+// 기존 인터페이스에 새 필드 추가
+interface Window {
+  title: string;
+}
+
+interface Window {
+  ts: TypeScriptAPI;
+}
+
+const src = 'const a = "Hello World"';
+window.ts.transpileModule(src, {});
+
+// 유형을 만든 후에는 변경할 수 없다.
+type Window = {
+  title: string;
+};
+
+// Error: Duplicate identifier 'Window'
+type Window = {
+  ts: TypeScriptAPI;
+};
+
+/**
+ * 타입 주장(Assertions)
+ *
+ * 때로는 TypeScript가 알 수 없는 값 타입에 대한 정보를 갖게 될 것이다.
+ * 예를 들어 document.getElementById를 사용하는 경우
+ * TypeScript는 일종의 HTMLElement HTMLCanvasElement를 반환한다는 것만 알고 있지만
+ * 페이지에는 항상 주어진 ID가 있다는 것을 알 수 있다.
+ *
+ * 이 상황에서는 타입 주장을 사용하여 보다 구체적인 타입을 지정할 수 있다.
+ *
+ * 타입 주석과 마찬가지로 타입 주장은 컴파일러에 의해 제거되며 코드의 런타임 동작에 영향을 주지 않는다.
+ */
+
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+
+// tsx에서는 꺽쇠 괄호 구문을 사용할 수도 있다.
+const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
+
+// 타입 주장은 컴파일 타임에 제거되므로 타입 주장과 관련된 런타임 검사가 없다.
+// null 타입 주장이 잘못된 경우 예외가 발생하거나 생성되지 않는다.
