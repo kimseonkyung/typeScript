@@ -16,8 +16,8 @@ const c: boolean = true;
  * 배열 타입을 의미한다.
  */
 
-const arr: number[] = [1, 2, 3];
-const arr: string[] = ["a", "b", "c"];
+const arrA: number[] = [1, 2, 3];
+const arrB: string[] = ["a", "b", "c"];
 
 /**
  * any
@@ -66,11 +66,11 @@ function greet(name: string) {
  * 일반적으로 타입 추론을 하기때문에 명시하지 않아도 된다.
  */
 
-function getFavoriteNumber(): number {
+function getFavoriteNumberA(): number {
   return 50;
 }
 
-async function getFavoriteNumber(): Promise<number> {
+async function getFavoriteNumberB(): Promise<number> {
   return 50;
 }
 
@@ -198,12 +198,12 @@ type Point = {
   y: number;
 };
 
-function printCoord(pt: Point) {
+function printCoordA(pt: Point) {
   console.log(`The coordinate's x value is ${pt.x}`);
   console.log(`The coordinate's y value is ${pt.y}`);
 }
 
-printCoord({ x: 100, y: 100 });
+printCoordA({ x: 100, y: 100 });
 
 // 유니온 타입 지정
 type ID = number | string;
@@ -221,12 +221,12 @@ interface Point {
   y: number;
 }
 
-function printCoord(pt: Point) {
+function printCoordB(pt: Point) {
   console.log(`The coordinate's x value is ${pt.x}`);
   console.log(`The coordinate's y value is ${pt.y}`);
 }
 
-printCoord({ x: 100, y: 100 });
+printCoordB({ x: 100, y: 100 });
 
 /**
  * 타입 별칭과 인터페이스의 차이점
@@ -242,26 +242,26 @@ interface Animal {
   name: string;
 }
 
-interface Bear extends Animal {
+interface BearA extends Animal {
   honey: boolean;
 }
 
-const bear = getBear();
-bear.name;
-bear.honey;
+const bearA = getBear();
+bearA.name;
+bearA.honey;
 
 // 교차점을 통해 타입 확장
-type Animal = {
+type AnimalA = {
   name: string;
 };
 
-type Bear = Animal & {
+type BearB = AnimalA & {
   honey: boolean;
 };
 
-const bear = getBear();
-bear.name;
-bear.honey;
+const bearB = getBear();
+bearB.name;
+bearB.honey;
 
 // 기존 인터페이스에 새 필드 추가
 interface Window {
@@ -298,10 +298,10 @@ type Window = {
  * 타입 주석과 마찬가지로 타입 주장은 컴파일러에 의해 제거되며 코드의 런타임 동작에 영향을 주지 않는다.
  */
 
-const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+const myCanvasA = document.getElementById("main_canvas") as HTMLCanvasElement;
 
 // tsx에서는 꺽쇠 괄호 구문을 사용할 수도 있다.
-const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
+const myCanvasB = <HTMLCanvasElement>document.getElementById("main_canvas");
 
 // 타입 주장은 컴파일 타임에 제거되므로 타입 주장과 관련된 런타임 검사가 없다.
 // null 타입 주장이 잘못된 경우 예외가 발생하거나 생성되지 않는다.
