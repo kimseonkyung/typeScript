@@ -29,15 +29,15 @@
     <li>효과적으로 사용하는 방법</li>
 </ol>
 
-</br>
+<br />
 
 ---
 
-</br>
+<br />
 
 참고
-</br>
+<br />
 
 https://www.typescriptlang.org/docs/
-</br>
+<br />
 https://typescript-kr.github.io/pages/classes.html
